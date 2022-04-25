@@ -39,6 +39,11 @@ class MobileOAuth extends CoreOAuth {
   @override
   Future<String?> getAccessToken() async =>
       (await _authStorage.loadTokenFromCache()).accessToken;
+  
+  /// Retrieve cached OAuth Refresh Token.
+  @override
+  Future<String?> getRefreshToken() async =>
+      (await _authStorage.loadTokenFromCache()).refreshToken;
 
   /// Retrieve cached OAuth Id Token.
   @override
@@ -69,7 +74,11 @@ class MobileOAuth extends CoreOAuth {
     }
 
     if (token.hasRefreshToken()) {
-      token = await _requestToken.requestRefreshToken(token.refreshToken!);
+      try {
+        token = await _requestToken.requestRefreshToken(token.refreshToken!);
+      } catch(e) {
+        token = await _performFullAuthFlow();
+      }
     }
 
     if (!token.hasValidAccessToken()) {

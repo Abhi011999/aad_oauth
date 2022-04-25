@@ -15,6 +15,8 @@ class CoreOAuth {
 
   Future<String?> getAccessToken() async => 'ACCESS_TOKEN';
 
+  Future<String?> getRefreshToken() async => 'REFRESH_TOKEN';
+
   Future<String?> getIdToken() async => 'ID_TOKEN';
 
   factory CoreOAuth.fromConfig(Config config) =>

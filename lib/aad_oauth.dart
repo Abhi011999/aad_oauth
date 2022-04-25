@@ -25,8 +25,7 @@ class AadOAuth {
   Future<String?> getAccessToken() async => _coreOAuth.getAccessToken();
 
   /// Retrieve cached OAuth Refresh Token.
-  Future<String?> getRefreshToken() async =>
-      (await _authStorage.loadTokenFromCache()).refreshToken;
+  Future<String?> getRefreshToken() async => _coreOAuth.getRefreshToken();
 
   /// Retrieve cached OAuth Id Token.
   Future<String?> getIdToken() async => _coreOAuth.getIdToken();
