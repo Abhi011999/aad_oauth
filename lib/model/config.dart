@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Parameters according to official Microsoft Documentation:
 /// - Azure AD https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
@@ -105,48 +104,38 @@ class Config {
   /// Azure Active Directory B2C provides business-to-customer identity as a service.
   final bool isB2C;
 
-  /// Flag whether to use a stub implementation for unit testing or not
-  bool isStub;
-
-  /// Navigator key used to navigate to the login webview if interactive login is required
-  GlobalKey<NavigatorState> navigatorKey;
+  /// Current screen size.
+  Rect? screenSize;
 
   /// User agent of web view. (using flutter_webview_plugin)
   String? userAgent;
 
-  /// android storage options for shared preferences - defaults to encrypting shared prefs
-  AndroidOptions aOptions;
-
   /// Azure AD OAuth Configuration. Look at individual fields for description.
-  Config({
-    required this.tenant,
-    this.policy,
-    required this.clientId,
-    this.responseType = 'code',
-    required this.redirectUri,
-    required this.scope,
-    this.responseMode,
-    this.state,
-    this.prompt,
-    this.codeChallenge,
-    this.codeChallengeMethod,
-    this.nonce = '12345',
-    this.tokenIdentifier = 'Token',
-    this.clientSecret,
-    this.resource,
-    this.isB2C = false,
-    this.loginHint,
-    this.domainHint,
-    this.codeVerifier,
-    this.userAgent,
-    this.isStub = false,
-    AndroidOptions? aOptions,
-    required this.navigatorKey,
-  })  : authorizationUrl = isB2C
+  Config(
+      {required this.tenant,
+      this.policy,
+      required this.clientId,
+      this.responseType = 'code',
+      required this.redirectUri,
+      required this.scope,
+      this.responseMode,
+      this.state,
+      this.prompt,
+      this.codeChallenge,
+      this.codeChallengeMethod,
+      this.nonce = '12345',
+      this.tokenIdentifier = 'Token',
+      this.clientSecret,
+      this.resource,
+      this.isB2C = false,
+      this.loginHint,
+      this.domainHint,
+      this.codeVerifier,
+      this.userAgent})
+      : authorizationUrl = isB2C
             ? 'https://$tenant.b2clogin.com/$tenant.onmicrosoft.com/$policy/oauth2/v2.0/authorize'
             : 'https://login.microsoftonline.com/$tenant/oauth2/v2.0/authorize',
         tokenUrl = isB2C
             ? 'https://$tenant.b2clogin.com/$tenant.onmicrosoft.com/$policy/oauth2/v2.0/token'
-            : 'https://login.microsoftonline.com/$tenant/oauth2/v2.0/token',
-        aOptions = aOptions ?? AndroidOptions(encryptedSharedPreferences: true);
+            : 'https://login.microsoftonline.com/$tenant/oauth2/v2.0/token';
 }

@@ -1,11 +1,8 @@
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
-
-final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   @override
@@ -16,7 +13,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'AAD OAuth Home'),
-      navigatorKey: navigatorKey,
     );
   }
 }
@@ -30,23 +26,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Must configure flutter to start the web server for the app on
-  // the port listed below. In VSCode, this can be done with
-  // the following run settings in launch.json
-  // "args": ["-d", "chrome","--web-port", "8483"]
   static final Config config = Config(
     tenant: 'YOUR_TENANT_ID',
     clientId: 'YOUR_CLIENT_ID',
     scope: 'openid profile offline_access',
-    redirectUri: kIsWeb
-        ? 'http://localhost:8483'
-        : 'https://login.live.com/oauth20_desktop.srf',
-    navigatorKey: navigatorKey,
+    redirectUri: 'https://login.live.com/oauth20_desktop.srf',
   );
   final AadOAuth oauth = AadOAuth(config);
 
   @override
   Widget build(BuildContext context) {
+    // adjust window size for browser login
+    oauth.setWebViewScreenSizeFromMedia(MediaQuery.of(context));
 
     return Scaffold(
       appBar: AppBar(

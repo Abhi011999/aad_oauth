@@ -1,51 +1,63 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-
 import 'request/authorization_request.dart';
 import 'model/config.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class RequestCode {
+  final StreamController<String?> _onCodeListener = StreamController();
+  final FlutterWebviewPlugin _webView = FlutterWebviewPlugin();
   final Config _config;
   final AuthorizationRequest _authorizationRequest;
 
-  String? _code;
+  late Stream<String?> _onCodeStream;
 
   RequestCode(Config config)
       : _config = config,
-        _authorizationRequest = AuthorizationRequest(config);
+        _authorizationRequest = AuthorizationRequest(config) {
+    _onCodeStream = _onCodeListener.stream.asBroadcastStream();
+  }
   Future<String?> requestCode() async {
-    _code = null;
+    String? code;
     final urlParams = _constructUrlParams();
-    var webView = WebView(
-      initialUrl: '${_authorizationRequest.url}?$urlParams',
-      javascriptMode: JavascriptMode.unrestricted,
-      navigationDelegate: _navigationDelegate,
+
+    await _webView.launch(
+      '${_authorizationRequest.url}?$urlParams',
+      clearCookies: _authorizationRequest.clearCookies,
+      hidden: false,
+      rect: _config.screenSize,
+      userAgent: _config.userAgent,
     );
-    await _config.navigatorKey.currentState!.push(MaterialPageRoute(
-        builder: (context) => Scaffold(
-              body: SafeArea(child: webView),
-            )));
-    return _code;
+
+    _webView.onUrlChanged.listen((String url) {
+      var uri = Uri.parse(url);
+
+      if (uri.queryParameters['error'] != null) {
+        _webView.close();
+        _onCodeListener.add(null);
+      }
+
+      if (uri.queryParameters['code'] != null) {
+        _webView.close();
+        _onCodeListener.add(uri.queryParameters['code']);
+      }
+    });
+
+    code = await _onCode.first;
+    return code;
   }
 
-  FutureOr<NavigationDecision> _navigationDelegate(NavigationRequest request) {
-    var uri = Uri.parse(request.url);
-
-    if (uri.queryParameters['error'] != null) {
-      _config.navigatorKey.currentState!.pop();
-    }
-
-    if (uri.queryParameters['code'] != null) {
-      _code = uri.queryParameters['code'];
-      _config.navigatorKey.currentState!.pop();
-    }
-    return NavigationDecision.navigate;
+  void sizeChanged() {
+    _webView.resize(_config.screenSize!);
   }
 
   Future<void> clearCookies() async {
-    await CookieManager().clearCookies();
+    await _webView.launch('', hidden: true);
+    await _webView.cleanCookies();
+    await _webView.clearCache();
+    await _webView.close();
   }
+
+  Stream<String?> get _onCode => _onCodeStream;
 
   String _constructUrlParams() =>
       _mapToQueryParams(_authorizationRequest.parameters);
