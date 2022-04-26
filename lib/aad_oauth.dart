@@ -59,7 +59,8 @@ class AadOAuth {
       (await _authStorage.loadTokenFromCache()).accessToken;
 
   /// Retrieve cached OAuth Refresh Token.
-  Future<String?> getRefreshToken() async => _coreOAuth.getRefreshToken();
+  Future<String?> getRefreshToken() async =>
+      (await _authStorage.loadTokenFromCache()).refreshToken;
 
   /// Retrieve cached OAuth Id Token.
   Future<String?> getIdToken() async =>
@@ -88,7 +89,11 @@ class AadOAuth {
     }
 
     if (token.hasRefreshToken()) {
-      token = await _requestToken.requestRefreshToken(token.refreshToken!);
+      try {
+        token = await _requestToken.requestRefreshToken(token.refreshToken!);
+      } catch(e) {
+        token = await _performFullAuthFlow();
+      }
     }
 
     if (!token.hasValidAccessToken()) {
