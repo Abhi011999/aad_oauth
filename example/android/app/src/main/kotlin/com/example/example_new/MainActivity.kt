@@ -1,4 +1,4 @@
-package com.example.example_oauth
+package com.example.example_new
 
 import io.flutter.embedding.android.FlutterActivity
 
