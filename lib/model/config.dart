@@ -109,7 +109,7 @@ class Config {
   bool isStub;
 
   /// Navigator key used to navigate to the login webview if interactive login is required
-  GlobalKey<NavigatorState> navigatorKey;
+  NavigatorState? navigatorState;
 
   /// User agent of web view. (using flutter_webview_plugin)
   String? userAgent;
@@ -141,7 +141,7 @@ class Config {
     this.userAgent,
     this.isStub = false,
     AndroidOptions? aOptions,
-    required this.navigatorKey,
+    required this.navigatorState,
   })  : authorizationUrl = isB2C
             ? 'https://$tenant.b2clogin.com/$tenant.onmicrosoft.com/$policy/oauth2/v2.0/authorize'
             : 'https://login.microsoftonline.com/$tenant/oauth2/v2.0/authorize',

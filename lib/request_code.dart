@@ -22,7 +22,7 @@ class RequestCode {
       javascriptMode: JavascriptMode.unrestricted,
       navigationDelegate: _navigationDelegate,
     );
-    await _config.navigatorKey.currentState!.push(MaterialPageRoute(
+    await _config.navigatorState!.push(MaterialPageRoute(
         builder: (context) => Scaffold(
               body: SafeArea(child: webView),
             )));
@@ -33,12 +33,12 @@ class RequestCode {
     var uri = Uri.parse(request.url);
 
     if (uri.queryParameters['error'] != null) {
-      _config.navigatorKey.currentState!.pop();
+      _config.navigatorState!.pop();
     }
 
     if (uri.queryParameters['code'] != null) {
       _code = uri.queryParameters['code'];
-      _config.navigatorKey.currentState!.pop();
+      _config.navigatorState!.pop();
     }
     return NavigationDecision.navigate;
   }

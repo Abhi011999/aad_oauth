@@ -1,27 +1,26 @@
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
+import 'package:example_new/router.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-final navigatorKey = GlobalKey<NavigatorState>();
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
       title: 'AAD OAuth Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'AAD OAuth Home'),
-      navigatorKey: navigatorKey,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -34,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
     clientId: '846dac84-463f-4298-ba82-4f8dcbb81f93',
     scope: 'user.read offline_access',
     redirectUri: 'msauth://com.example.zen_app/M61nf%2BaC69kCXmFY1ejcX83rDNc%3D',
-    navigatorKey: navigatorKey,
+    navigatorState: router.navigator,
   );
 
   final AadOAuth oauth = AadOAuth(config);
