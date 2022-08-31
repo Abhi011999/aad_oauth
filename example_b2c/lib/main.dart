@@ -57,7 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
       isB2C: true,
       navigatorKey: navigatorKey,
       policy: 'YOUR_USER_FLOW___USER_FLOW_A',
-      tokenIdentifier: 'UNIQUE IDENTIFIER A');
+      tokenIdentifier: 'UNIQUE IDENTIFIER A',
+      loader: SizedBox());
 
   static final Config configB2Cb = Config(
       tenant: 'YOUR_TENANT_NAME',
@@ -70,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
       clientSecret: 'YOUR_CLIENT_SECRET',
       isB2C: true,
       policy: 'YOUR_USER_FLOW___USER_FLOW_B',
-      tokenIdentifier: 'UNIQUE IDENTIFIER B');
+      tokenIdentifier: 'UNIQUE IDENTIFIER B',
+      loader: SizedBox());
 
   //You can have as many B2C flows as you want
 

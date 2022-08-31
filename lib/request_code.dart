@@ -21,11 +21,23 @@ class RequestCode {
       initialUrl: '${_authorizationRequest.url}?$urlParams',
       javascriptMode: JavascriptMode.unrestricted,
       navigationDelegate: _navigationDelegate,
+      backgroundColor: Colors.transparent,
     );
+<<<<<<< HEAD
     await _config.navigatorState!.push(MaterialPageRoute(
+=======
+
+    await _config.navigatorKey.currentState!.push(
+      MaterialPageRoute(
+>>>>>>> f99960f (Feat: add loader while render web page in webview)
         builder: (context) => Scaffold(
-              body: SafeArea(child: webView),
-            )));
+            body: SafeArea(
+          child: Stack(
+            children: [_config.loader, webView],
+          ),
+        )),
+      ),
+    );
     return _code;
   }
 

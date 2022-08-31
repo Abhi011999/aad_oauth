@@ -29,13 +29,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static final Config config = Config(
-    tenant: '72f988bf-86f1-41af-91ab-2d7cd011db47',
-    clientId: '846dac84-463f-4298-ba82-4f8dcbb81f93',
-    scope: 'user.read offline_access',
-    redirectUri: 'msauth://com.example.zen_app/M61nf%2BaC69kCXmFY1ejcX83rDNc%3D',
-    navigatorState: router.navigator,
-  );
-
+      tenant: 'YOUR_TENANT_ID',
+      clientId: 'YOUR_CLIENT_ID',
+      scope: 'openid profile offline_access',
+      redirectUri: kIsWeb
+          ? 'http://localhost:8483'
+          : 'https://login.live.com/oauth20_desktop.srf',
+      navigatorKey: navigatorKey,
+      loader: SizedBox());
   final AadOAuth oauth = AadOAuth(config);
 
   @override
