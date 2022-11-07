@@ -1,6 +1,7 @@
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
 import 'package:example_new/router.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -35,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       redirectUri: kIsWeb
           ? 'http://localhost:8483'
           : 'https://login.live.com/oauth20_desktop.srf',
-      navigatorKey: navigatorKey,
+      navigatorState: NavigatorState(),
       loader: SizedBox());
   final AadOAuth oauth = AadOAuth(config);
 

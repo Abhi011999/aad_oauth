@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
           : 'https://login.live.com/oauth20_desktop.srf',
       clientSecret: 'YOUR_CLIENT_SECRET',
       isB2C: true,
-      navigatorKey: navigatorKey,
+      navigatorState: NavigatorState(),
       policy: 'YOUR_USER_FLOW___USER_FLOW_A',
       tokenIdentifier: 'UNIQUE IDENTIFIER A',
       loader: SizedBox());
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
       tenant: 'YOUR_TENANT_NAME',
       clientId: 'YOUR_CLIENT_ID',
       scope: 'YOUR_CLIENT_ID offline_access',
-      navigatorKey: navigatorKey,
+      navigatorState: NavigatorState(),
       redirectUri: kIsWeb
           ? 'http://localhost:8483'
           : 'https://login.live.com/oauth20_desktop.srf',

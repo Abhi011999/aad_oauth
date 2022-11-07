@@ -23,13 +23,7 @@ class RequestCode {
       navigationDelegate: _navigationDelegate,
       backgroundColor: Colors.transparent,
     );
-<<<<<<< HEAD
     await _config.navigatorState!.push(MaterialPageRoute(
-=======
-
-    await _config.navigatorKey.currentState!.push(
-      MaterialPageRoute(
->>>>>>> f99960f (Feat: add loader while render web page in webview)
         builder: (context) => Scaffold(
             body: SafeArea(
           child: Stack(
